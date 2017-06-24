@@ -23,10 +23,10 @@ class ZipCodeValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if (!in_array($value, $this->zipCodeRepository->all())) {
+        if (!in_array($value, $this->zipCodeRepository->getAll())) {
             $this->context->addViolation($constraint->message);
             $this->context->buildViolation($constraint->message)
-                          ->atPath('zipcode')
+                          ->atPath('zipCode')
                           ->addViolation();
         }
     }

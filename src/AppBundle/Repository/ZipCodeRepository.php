@@ -10,4 +10,12 @@ namespace AppBundle\Repository;
  */
 class ZipCodeRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getAll()
+    {
+        return $this
+            ->createQueryBuilder('zc')
+            ->select('zc.code')
+            ->getQuery()
+            ->getResult();
+    }
 }
