@@ -5,12 +5,15 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Validator\Constraints as AppAssert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Contact
  *
  * @ORM\Table(name="contact")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ContactRepository")
+ * @UniqueEntity(fields="email", message="Ce mail existe déjà en base de données.")
+ * @UniqueEntity(fields="phoneNumber", message="Ce numéro de téléphone existe déjà en base de données.")
  */
 class Contact
 {
@@ -28,6 +31,7 @@ class Contact
      *
      * @ORM\Column(name="gender", type="string")
      * @Assert\Choice(choices = {"mister", "misses", "miss"}, message = "Genre invalide.")
+     * @Assert\NotBlank(message="La civilité est obligatoire.")
      */
     private $gender;
 
@@ -35,6 +39,7 @@ class Contact
      * @var string
      *
      * @ORM\Column(name="lastName", type="string", length=255)
+     * @Assert\NotBlank(message="Le nom de famille est obligatoire.")
      */
     private $lastName;
 
@@ -42,6 +47,7 @@ class Contact
      * @var string
      *
      * @ORM\Column(name="firstName", type="string", length=255)
+     * @Assert\NotBlank(message="Le prénom est obligatoire.")
      */
     private $firstName;
 
@@ -49,8 +55,8 @@ class Contact
      * @var int
      *
      * @ORM\Column(name="zipCode", type="integer")
-     * @Assert\Regex("/^(([0-8][0-9])|(9[0-5]))[0-9]{3}/")
      * @AppAssert\ZipCode()
+     * @Assert\NotBlank(message="Le code postal est obligatoire.")
      */
     private $zipCode;
 
@@ -58,7 +64,8 @@ class Contact
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255, unique=true)
-     * @Assert\Email(message="Email invalide")
+     * @Assert\Email(message="Email invalide.")
+     * @Assert\NotBlank(message="L'email est obligatoire.")
      */
     private $email;
 
@@ -67,6 +74,7 @@ class Contact
      *
      * @ORM\Column(name="phoneNumber", type="string", length=255, unique=true)
      * @Assert\Regex("/^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}/")
+     * @Assert\NotBlank(message="Le numéro de téléphone est obligatoire.")
      */
     private $phoneNumber;
 

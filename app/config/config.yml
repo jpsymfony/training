@@ -72,44 +72,53 @@ swiftmailer:
     spool: { type: memory }
 
 fos_rest:
+    routing_loader:
+        default_format: json
+        include_format: true
+    versioning:
+        enabled: true
+        resolvers:
+            media_type:
+                enabled: true
+                regex: '/(v|version)=(?P<version>[0-9\.]+)/'
     body_listener:
         # Convert underscore case properties to camel case
         # ie: { "the_date": "2014-09-30" } => { "theDate": "2014-09-30" }
+        # without this, we have to use camelCase into jsonBody
         array_normalizer: fos_rest.normalizer.camel_keys
+    # for fosParamConverter if we choose to use ConstraintViolationListInterface
     body_converter:
         enabled: true
         validate: true
         validation_errors_argument: violations
     view:
         view_response_listener: 'force'
+        failed_validation: HTTP_UNPROCESSABLE_ENTITY #if not defined, HTTP_BAD_REQUEST returned
         mime_types:
             json: true
-            xml: true
         formats:
             json: true
-            xml: true
-            rss: false
     exception:
         codes:
-            'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
+        # here we can add our own exceptions to return wanted http code
+            'Symfony\Component\Routing\Exception\ResourceNotFoundException': HTTP_NOT_FOUND
             'Doctrine\ORM\OptimisticLockException': HTTP_CONFLICT
         messages:
+        # here we specify we want to have messages returned for those exceptions
             'Symfony\Component\Routing\Exception\ResourceNotFoundException': true
-    param_fetcher_listener: true
+    param_fetcher_listener: true # for filters
     serializer:
         serialize_null: true
     format_listener:
-        media_type:
-            version_regex: '/(v|version)=(?P<version>[0-9\.]+)/'
         rules:
-            - { path: '^/api/v1', priorities: ['json', 'xml'], fallback_format: json, prefer_extension: false }
-            - { path: '^/', priorities: [ 'html'], fallback_format: html }
+            - { path: ^/api, priorities: ['json'], fallback_format: json, prefer_extension: true }
+            - { path: ^/, priorities: ['json'], fallback_format: json, prefer_extension: true }
 
 nelmio_api_doc:
-    name:                 'App API documentation'
+    name: 'App API documentation'
     sandbox:
         body_format:
-            formats: [form, json, xml]
+            formats: [form, json]
             default_format: json
 
 # JMS Serializer
