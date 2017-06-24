@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\Constraints as AppAssert;
 
 /**
  * Contact
@@ -24,7 +26,8 @@ class Contact
     /**
      * @var int
      *
-     * @ORM\Column(name="gender", type="smallint")
+     * @ORM\Column(name="gender", type="string")
+     * @Assert\Choice(choices = {"mister", "misses", "miss"}, message = "Genre invalide.")
      */
     private $gender;
 
@@ -46,6 +49,8 @@ class Contact
      * @var int
      *
      * @ORM\Column(name="zipCode", type="integer")
+     * @Assert\Regex("/^(([0-8][0-9])|(9[0-5]))[0-9]{3}/")
+     * @AppAssert\ZipCode()
      */
     private $zipCode;
 
@@ -53,6 +58,7 @@ class Contact
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255, unique=true)
+     * @Assert\Email(message="Email invalide")
      */
     private $email;
 
@@ -60,6 +66,7 @@ class Contact
      * @var string
      *
      * @ORM\Column(name="phoneNumber", type="string", length=255, unique=true)
+     * @Assert\Regex("/^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}/")
      */
     private $phoneNumber;
 
