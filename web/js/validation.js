@@ -35,14 +35,16 @@ $(document).ready(function () {
                 'actuality':  undefined === $("input[name=actuality]:checked").val() ? false : $("input[name=actuality]:checked").val(),
                 'offer':  undefined === $("input[name=offer]:checked").val() ? false : $("input[name=offer]:checked").val()
             },
-            dataType: 'json', // JSON
-            success: function () {
+            dataType: 'json',
+            success: function (json) {
+                $(".erreur").html('');
                 $(location).attr('href', Routing.generate('confirmation'))
             },
             error: function (json) {
                 $.each(json.responseJSON.children, function (index, element) {
+                    $(".erreur-" + index).html('');
                     if (element.errors) {
-                        $("input[name=" + index + "]").after('<h1>' + element.errors[0] + '</h1>');
+                        $(".erreur-" + index).html(element.errors[0]).show();
                     }
                 });
             }

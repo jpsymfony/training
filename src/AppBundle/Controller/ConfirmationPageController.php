@@ -14,6 +14,6 @@ class ConfirmationPageController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('confirmation_page/index.html.twig');
+        return $this->render('confirmation/index.html.twig');
     }
 }

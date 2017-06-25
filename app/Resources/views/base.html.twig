@@ -10,6 +10,13 @@
             <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
             <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" />
         {% endblock %}
+
+        {% stylesheets filter='cssrewrite'
+            'css/custom.css'  output='css/compiled/main.css'
+            filter='yui_css' %}
+            <link rel="stylesheet" href="{{ asset_url }}">
+        {% endstylesheets %}
+
         <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.png') }}" />
     </head>
     <body>
@@ -22,5 +29,10 @@
             <script src="{{ asset('js/script.js') }}"></script>
             <script src="{{ asset('js/validation.js') }}"></script>
         {% endblock %}
+
+        {% javascripts 'js/validation.js' output='js/compiled/main.js'
+            filter='yui_js' %}
+            <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
     </body>
 </html>
