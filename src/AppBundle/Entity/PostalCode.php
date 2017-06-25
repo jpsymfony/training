@@ -8,9 +8,8 @@ use JMS\Serializer\Annotation as Serializer;
 /**
  * PostalCode
  *
- * @ORM\Table(name="postal_code")
+ * @ORM\Table(name="postal_code", indexes={@ORM\Index(name="postal_code", columns={"code"})})
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PostalCodeRepository")
- * @Serializer\ExclusionPolicy("ALL")
  */
 class PostalCode
 {
@@ -27,7 +26,6 @@ class PostalCode
      * @var int
      *
      * @ORM\Column(name="code", type="integer", unique=true)
-     * @Serializer\Expose
      */
     private $code;
 

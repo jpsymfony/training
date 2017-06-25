@@ -7,6 +7,8 @@
         <title>{% block title %}Nexity{% endblock %}</title>
         {% block stylesheets %}
             <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+            <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+            <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" />
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.png') }}" />
     </head>
@@ -14,11 +16,11 @@
         {% block body %}{% endblock %}
         {% block javascripts %}
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
             <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
             <script src="{{ asset('js/fos_js_routes.js') }}"></script>
             <script src="{{ asset('js/script.js') }}"></script>
             <script src="{{ asset('js/validation.js') }}"></script>
-            <script src="{{ asset('js/jquery.autocomplete.min.js') }}"></script>
         {% endblock %}
     </body>
 </html>

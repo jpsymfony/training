@@ -32,6 +32,6 @@ class PostalCodeController extends FOSRestController
      */
     public function getPostalCodesAction(Request $request)
     {
-        return $this->get('app.repository.postalcode')->getByPostalCode($request->query->get('query'));
+        return $this->get('app.repository.postalcode')->getByPostalCode($request->query->get('postalCode'));
     }
 }

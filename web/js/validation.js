@@ -1,10 +1,20 @@
 $(document).ready(function () {
-
-    $('#autocomplete').autocomplete({
-        serviceUrl: Routing.generate('app_api_get_postalcodes', {version: "v1", postalCode: $("input[name=postalCode]").val()}),
-        onSelect: function (suggestion) {
-            alert('You selected: ' + suggestion);
-        }
+    $( "#postalCode" ).autocomplete({
+        source : function(request, response){
+            $.ajax({
+                url : Routing.generate('app_api_get_postalcodes', {version: "v1"}),
+                dataType : 'json',
+                data : {
+                    postalCode : $("input[name=postalCode]").val()
+                },
+                success : function(result){
+                    response($.map(result, function(object){
+                        return object;
+                    }));
+                }
+            });
+        },
+        minLength: 1
     });
 
     $('form').on('submit', function (e) {
