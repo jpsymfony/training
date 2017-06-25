@@ -5,16 +5,16 @@ namespace AppBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use AppBundle\Entity\ZipCode;
+use AppBundle\Entity\PostalCode;
 
-class LoadZipCodeData extends AbstractFixture implements OrderedFixtureInterface
+class LoadPostalCodeData extends AbstractFixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
         for ($i = 1; $i <= 20; $i++) {
-            $zipcode = new ZipCode();
-            $zipcode->setCode(75000 + $i);
-            $manager->persist($zipcode);
+            $postalCode = new PostalCode();
+            $postalCode->setCode(75000 + $i);
+            $manager->persist($postalCode);
         }
 
         $manager->flush();

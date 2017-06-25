@@ -35,22 +35,25 @@ class ContactFormHandler implements FormHandlerInterface
     /**
      * @param Request $request
      *
-     * @return bool
+     * @return Contact
+     *
+     * @throws InvalidFormException
      */
     public function handle(Request $request)
     {
+        $data = $this->convertData($request->request->all());
         $form = $this->formFactory->create(
             ContactType::class,
                 new Contact(),
                 ['method' => $request->getMethod()]);
 
         // to work, we have to pass the entity name as key, like:
-        // {"contact": {"gender": "mister", "lastName": "Brau", "firstName": "laurent"}}
+        // {"contact": {"gender": "mister", "name": "Brau", "firstName": "laurent"}}
         //$form->handleRequest($request);
 
         // to work, we don't have to pass the entity name as key, like:
-        // {"gender": "mister", "lastName": "Brau", "firstName": "laurent"}
-        $form->submit($request->request->all(), $request->getMethod() !== 'PATCH');
+        // {"gender": "mister", "name": "Brau", "firstName": "laurent"}
+        $form->submit($data, $request->getMethod() !== 'PATCH');
 
         if ($form->isSubmitted() && !$form->isValid()) {
             throw new InvalidFormException('Invalid submitted data', Response::HTTP_UNPROCESSABLE_ENTITY, $form);
@@ -60,5 +63,42 @@ class ContactFormHandler implements FormHandlerInterface
         $this->manager->save($contact);
 
         return $contact;
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return array
+     */
+    protected function convertData(array $data)
+    {
+        return [
+            'gender' => isset($data['gender']) ? $data['gender'] : "",
+            'name' => isset($data['name']) ? $data['name'] : "",
+            'firstName' => isset($data['firstName']) ? $data['firstName']: "",
+            'postalCode' => isset($data['postalCode']) ? (int) $data['postalCode']: "",
+            'mail' => isset($data['mail']) ? $data['mail'] : "",
+            'phone' => isset($data['phone']) ? $data['phone'] : "",
+            'actuality' => isset($data['actuality']) ? $this->convertBoolean($data['actuality']) : false,
+            'offer' => isset($data['offer']) ? $this->convertBoolean($data['offer']) : false ,
+        ];
+    }
+
+    /**
+     * @param $boolean
+     *
+     * @return bool
+     */
+    protected function convertBoolean($boolean)
+    {
+        if (is_string($boolean)) {
+            if ("false" === $boolean || "0" === $boolean) {
+                return false;
+            }
+
+            return true;
+        }
+
+        return boolval($boolean);
     }
 }

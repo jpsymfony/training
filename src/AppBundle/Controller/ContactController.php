@@ -9,16 +9,20 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation as Doc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
+/**
+ * @Route("api/{version}", defaults={"version": "v1"})
+ */
 class ContactController extends FOSRestController
 {
     /**
      * @param Request $request
      *
-     * @Rest\Post("/contact", name="app_api_post_contact")
+     * @Rest\Post("/contact", name="app_api_post_contact", options={"expose"=true})
      *
      * @Rest\View(statusCode=201)
      *

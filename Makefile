@@ -1,13 +1,14 @@
 #
 # Makefile
 #
-
 up: init install
 
 init:
 	php bin/console doctrine:database:create
 	php bin/console doctrine:schema:create
 	php bin/console doctrine:fixtures:load -n
+	php bin/console server:start
+
 
 # Install
 install: update-bin install-composer
@@ -17,11 +18,12 @@ install-composer: bin/composer
 
 
 # Binaries
+update-bin: bin/composer
+	./bin/composer self-update
+
 bin/composer:
 	curl -sS https://getcomposer.org/installer | php -- --install-dir=bin --filename=composer
 	chmod +x bin/composer || /bin/true
-update-bin: bin/composer
-	./bin/composer self-update
 
 
 # Tests
