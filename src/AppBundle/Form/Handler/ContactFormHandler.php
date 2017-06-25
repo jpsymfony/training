@@ -48,11 +48,11 @@ class ContactFormHandler implements FormHandlerInterface
                 ['method' => $request->getMethod()]);
 
         // to work, we have to pass the entity name as key, like:
-        // {"contact": {"gender": "mister", "name": "Brau", "firstName": "laurent"}}
+        // {"contact": {"gender": "mister", "name": "myName", "firstName": "myFirstName"}}
         //$form->handleRequest($request);
 
         // to work, we don't have to pass the entity name as key, like:
-        // {"gender": "mister", "name": "Brau", "firstName": "laurent"}
+        // {"gender": "mister", "name": "myName", "firstName": "myFirstName"}
         $form->submit($data, $request->getMethod() !== 'PATCH');
 
         if ($form->isSubmitted() && !$form->isValid()) {
