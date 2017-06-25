@@ -1,4 +1,4 @@
-xtreme_sensio test
+training
 ===================
 
 - Cloner le projet
