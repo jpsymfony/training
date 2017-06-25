@@ -6,13 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
- * ZipCode
+ * PostalCode
  *
- * @ORM\Table(name="zip_code")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ZipCodeRepository")
+ * @ORM\Table(name="postal_code")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\PostalCodeRepository")
  * @Serializer\ExclusionPolicy("ALL")
  */
-class ZipCode
+class PostalCode
 {
     /**
      * @var int
@@ -47,7 +47,7 @@ class ZipCode
      *
      * @param integer $code
      *
-     * @return ZipCode
+     * @return PostalCode
      */
     public function setCode($code)
     {

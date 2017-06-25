@@ -1,4 +1,7 @@
-training
+xtreme_sensio test
 ===================
 
-A Symfony project created on June 24, 2017, 8:26 am.
+- Cloner le projet
+- Lancer un make up qui va installer la base, loader les fixtures, et lancer le serveur.
+
+Le projet est visible à l'url http://localhost:8000
