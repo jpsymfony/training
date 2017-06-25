@@ -14,14 +14,16 @@ class ContactType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('gender')
-                ->add('lastName')
+                ->add('name')
                 ->add('firstName')
-                ->add('zipCode')
-                ->add('email')
-                ->add('phoneNumber')
-                ->add('news')
-                ->add('optin');
+                ->add('postalCode')
+                ->add('mail')
+                ->add('phone')
+                ->add('actuality')
+                ->add('offer');
     }
+
+
     
     /**
      * {@inheritdoc}
@@ -29,17 +31,8 @@ class ContactType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Contact'
+            'data_class' => 'AppBundle\Entity\Contact',
+            'csrf_protection' => false,
         ));
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'appbundle_contact';
-    }
-
-
 }

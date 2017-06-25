@@ -2,33 +2,83 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Form\Handler\ContactHandler;
+use AppBundle\Entity\Contact;
+use AppBundle\Exception\InvalidFormException;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Nelmio\ApiDocBundle\Annotation as Doc;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-class ContactController extends Controller
+/**
+ * @Route("api/{version}", defaults={"version": "v1"})
+ */
+class ContactController extends FOSRestController
 {
     /**
-     * @Rest\Post("/", name="app_api_post_contact")
-     *
      * @param Request $request
+     *
+     * @Rest\Post("/contact", name="app_api_post_contact", options={"expose"=true})
+     *
+     * @Rest\View(statusCode=201)
      *
      * @return View
      *
-     * @Rest\Post()
+     * @Doc\ApiDoc(
+     *      section="Contact",
+     *      description="Creates a new contact.",
+     *      statusCodes={
+     *          201="Returned if contact has been successfully created",
+     *          422="Returned if errors",
+     *          500="Returned if server error"
+     *      }
+     * )
      */
     public function postContactAction(Request $request)
     {
         try {
-            $category = $this->get(ContactHandler::class)->create($request);
+            $contact = $this->get('app.form.handler.contact')->handle($request);
 
-            return $this->view(
-                $category, Response::HTTP_CREATED
-            );
+            return $this->view($contact);
         } catch (InvalidFormException $e) {
-            return $this->view($e->getForm());
+            return $this->view($e->getForm(), $e->getCode());
         }
+    }
+
+    /**
+     * @param Contact $contact
+     * @param ConstraintViolationListInterface $violations
+     *
+     * @Rest\Post("/contact-fos", name="app_api_post_contact_fos")
+     *
+     * @ParamConverter("contact", converter="fos_rest.request_body")
+     *
+     * @Rest\View(statusCode=201)
+     *
+     * @return View
+     *
+     * @Doc\ApiDoc(
+     *      section="ContactWithFOS",
+     *      description="Creates a new contact.",
+     *      statusCodes={
+     *          201="Returned if contact has been successfully created",
+     *          422="Returned if errors",
+     *          500="Returned if server error"
+     *      }
+     * )
+     */
+    public function postArticleWithFosContraintAction(Contact $contact, ConstraintViolationListInterface $violations)
+    {
+        if (count($violations)) {
+            return $this->view($violations, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $this->get('app.manager.contact')->save($contact);
+
+        return $this->view($contact, Response::HTTP_CREATED);
     }
 }

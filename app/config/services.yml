@@ -36,3 +36,13 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+
+    app.manager.contact:
+        class: AppBundle\Manager\ContactManager
+        arguments: ['@app.repository.contact']
+        public: true
+
+    app.form.handler.contact:
+        class: AppBundle\Form\Handler\ContactFormHandler
+        arguments: ['@app.manager.contact', '@form.factory']
+        public: true

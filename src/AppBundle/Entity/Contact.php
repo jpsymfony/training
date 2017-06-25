@@ -5,12 +5,15 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Validator\Constraints as AppAssert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Contact
  *
  * @ORM\Table(name="contact")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ContactRepository")
+ * @UniqueEntity(fields="mail", message="Ce mail existe déjà en base de données.")
+ * @UniqueEntity(fields="phone", message="Ce numéro de téléphone existe déjà en base de données.")
  */
 class Contact
 {
@@ -27,62 +30,67 @@ class Contact
      * @var int
      *
      * @ORM\Column(name="gender", type="string")
-     * @Assert\Choice(choices = {"mister", "misses", "miss"}, message = "Genre invalide.")
+     * @Assert\Choice(choices = {"miss", "madam", "mister"}, message = "Genre invalide.")
+     * @Assert\NotBlank(message="La civilité est obligatoire.")
      */
     private $gender;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="lastName", type="string", length=255)
+     * @ORM\Column(name="last_name", type="string", length=255)
+     * @Assert\NotBlank(message="Le nom de famille est obligatoire.")
      */
-    private $lastName;
+    private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="firstName", type="string", length=255)
+     * @ORM\Column(name="first_name", type="string", length=255)
+     * @Assert\NotBlank(message="Le prénom est obligatoire.")
      */
     private $firstName;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="zipCode", type="integer")
-     * @Assert\Regex("/^(([0-8][0-9])|(9[0-5]))[0-9]{3}/")
-     * @AppAssert\ZipCode()
+     * @ORM\Column(name="postal_code", type="integer")
+     * @AppAssert\PostalCode(message="Le code postal est incorrect.")
+     * @Assert\NotBlank(message="Le code postal est obligatoire.")
      */
-    private $zipCode;
+    private $postalCode;
 
     /**
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255, unique=true)
-     * @Assert\Email(message="Email invalide")
+     * @Assert\Email(message="Email invalide.")
+     * @Assert\NotBlank(message="L'email est obligatoire.")
      */
-    private $email;
+    private $mail;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="phoneNumber", type="string", length=255, unique=true)
+     * @ORM\Column(name="phone", type="string", length=255, unique=true)
      * @Assert\Regex("/^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}/")
+     * @Assert\NotBlank(message="Le numéro de téléphone est obligatoire.")
      */
-    private $phoneNumber;
+    private $phone;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="news", type="boolean", nullable=true)
+     * @ORM\Column(name="actuality", type="boolean", nullable=true)
      */
-    private $news;
+    private $actuality;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="optin", type="boolean", nullable=true)
+     * @ORM\Column(name="offer", type="boolean", nullable=true)
      */
-    private $optin;
+    private $offer;
 
 
     /**
@@ -120,27 +128,27 @@ class Contact
     }
 
     /**
-     * Set lastName
+     * Set name
      *
-     * @param string $lastName
+     * @param string $name
      *
      * @return Contact
      */
-    public function setLastName($lastName)
+    public function setName($name)
     {
-        $this->lastName = $lastName;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get lastName
+     * Get name
      *
      * @return string
      */
-    public function getLastName()
+    public function getName()
     {
-        return $this->lastName;
+        return $this->name;
     }
 
     /**
@@ -168,123 +176,105 @@ class Contact
     }
 
     /**
-     * Set zipCode
+     * Set postalCode
      *
-     * @param integer $zipCode
+     * @param integer $postalCode
      *
      * @return Contact
      */
-    public function setZipCode($zipCode)
+    public function setPostalCode($postalCode)
     {
-        $this->zipCode = $zipCode;
+        $this->postalCode = $postalCode;
 
         return $this;
     }
 
     /**
-     * Get zipCode
-     *
      * @return int
      */
-    public function getZipCode()
+    public function getPostalCode()
     {
-        return $this->zipCode;
+        return $this->postalCode;
     }
 
     /**
-     * Set email
-     *
-     * @param string $email
-     *
-     * @return Contact
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * Get email
-     *
      * @return string
      */
-    public function getEmail()
+    public function getMail()
     {
-        return $this->email;
+        return $this->mail;
     }
 
     /**
-     * Set phoneNumber
-     *
-     * @param string $phoneNumber
+     * @param string $mail
      *
      * @return Contact
      */
-    public function setPhoneNumber($phoneNumber)
+    public function setMail($mail)
     {
-        $this->phoneNumber = $phoneNumber;
+        $this->mail = $mail;
 
         return $this;
     }
 
     /**
-     * Get phoneNumber
-     *
      * @return string
      */
-    public function getPhoneNumber()
+    public function getPhone()
     {
-        return $this->phoneNumber;
+        return $this->phone;
     }
 
     /**
-     * Set news
-     *
-     * @param boolean $news
+     * @param string $phone
      *
      * @return Contact
      */
-    public function setNews($news)
+    public function setPhone($phone)
     {
-        $this->news = $news;
+        $this->phone = $phone;
 
         return $this;
     }
 
     /**
-     * Get news
-     *
      * @return bool
      */
-    public function getNews()
+    public function isActuality()
     {
-        return $this->news;
+        return $this->actuality;
     }
 
     /**
-     * Set optin
-     *
-     * @param boolean $optin
+     * @param bool $actuality
      *
      * @return Contact
      */
-    public function setOptin($optin)
+    public function setActuality($actuality)
     {
-        $this->optin = $optin;
+        $this->actuality = $actuality;
 
         return $this;
     }
 
     /**
-     * Get optin
-     *
      * @return bool
      */
-    public function getOptin()
+    public function isOffer()
     {
-        return $this->optin;
+        return $this->offer;
+    }
+
+    /**
+     * @param bool $offer
+     *
+     * @return Contact
+     */
+    public function setOffer($offer)
+    {
+        $this->offer = $offer;
+
+        return $this;
     }
 }
 

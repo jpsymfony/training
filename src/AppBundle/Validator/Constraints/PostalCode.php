@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @Annotation
  */
-class ZipCode extends Constraint
+class PostalCode extends Constraint
 {
     public $message = 'Valeur non autorisée.';
 }
