@@ -7,6 +7,7 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation as Doc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Route("api/{version}")
@@ -14,10 +15,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class PostalCodeController extends FOSRestController
 {
     /**
-     * @Rest\Get("/autocomplete/postal-codes/{postalCode}", name="app_api_get_postalcodes", options={"expose"=true})
+     * @Rest\Get("/autocomplete/postal-codes", name="app_api_get_postalcodes", options={"expose"=true})
+     *
+     * @param Request $request
      *
      * @return View
-     *
      * @Doc\ApiDoc(
      *      section="PostalCode",
      *      description="Get the list of all postalcodes.",
@@ -28,8 +30,8 @@ class PostalCodeController extends FOSRestController
      *      }
      * )
      */
-    public function getPostalCodesAction($postalCode)
+    public function getPostalCodesAction(Request $request)
     {
-        return $this->get('app.repository.postalcode')->getByPostalCode($postalCode);
+        return $this->get('app.repository.postalcode')->getByPostalCode($request->query->get('query'));
     }
 }
