@@ -14,11 +14,11 @@ bin/composer:
 	curl -sS https://getcomposer.org/installer | php -- --install-dir=bin --filename=composer
 	chmod +x bin/composer || /bin/true
 
-install-composer: bin/composer
-	cp app/config/parameters.yml.dist app/config/parameters.yml
+install-composer:
 	./bin/composer install --no-interaction -o
 
 init:
+	cp app/config/parameters.yml.dist app/config/parameters.yml
 	php bin/console doctrine:database:create
 	php bin/console doctrine:schema:create
 	php bin/console doctrine:fixtures:load -n
