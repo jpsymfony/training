@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $( "#postalCode" ).autocomplete({
+    $("#postalCode").autocomplete({
         source : function(request, response){
             $.ajax({
                 url : Routing.generate('app_api_get_postalcodes', {version: "v1"}),
