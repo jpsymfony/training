@@ -3,11 +3,8 @@
 namespace AppBundle\Manager;
 
 use AppBundle\Entity\Contact;
+use AppBundle\Repository\ContactRepositoryInterface
 
-interface ContactManagerInterface
+interface ContactManagerInterface extends ContactRepositoryInterface
 {
-    /**
-     * @param Contact $contact
-     */
-    public function save(Contact $contact);
 }
