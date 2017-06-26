@@ -36,13 +36,13 @@ $(document).ready(function () {
                 'offer':  undefined === $("input[name=offer]:checked").val() ? false : $("input[name=offer]:checked").val()
             },
             dataType: 'json',
-            success: function (json) {
+            success: function () {
                 $(".erreur").html('');
                 $(location).attr('href', Routing.generate('confirmation'))
             },
             error: function (json) {
+                $(".erreur").html('');
                 $.each(json.responseJSON.children, function (index, element) {
-                    $(".erreur-" + index).html('');
                     if (element.errors) {
                         $(".erreur-" + index).html(element.errors[0]).show();
                     }
