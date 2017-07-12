@@ -79,26 +79,8 @@ class ContactFormHandler implements FormHandlerInterface
             'postalCode' => isset($data['postalCode']) ? (int) $data['postalCode']: "",
             'mail' => isset($data['mail']) ? $data['mail'] : "",
             'phone' => isset($data['phone']) ? $data['phone'] : "",
-            'actuality' => isset($data['actuality']) ? $this->convertBoolean($data['actuality']) : false,
+            'actuality' => isset($data['actuality']) ? (bool)($data['actuality']) : false,
             'offer' => isset($data['offer']) ? $this->convertBoolean($data['offer']) : false ,
         ];
-    }
-
-    /**
-     * @param $boolean
-     *
-     * @return bool
-     */
-    protected function convertBoolean($boolean)
-    {
-        if (is_string($boolean)) {
-            if ("false" === $boolean || "0" === $boolean) {
-                return false;
-            }
-
-            return true;
-        }
-
-        return boolval($boolean);
     }
 }
