@@ -1,3 +1,5 @@
+#!/usr/bin/make -f
+
 #
 # Makefile
 #
@@ -9,7 +11,7 @@ install: update-bin install-composer
 # Binaries
 update-bin: bin/composer
 	./bin/composer self-update
-	
+
 bin/composer:
 	curl -sS https://getcomposer.org/installer | php -- --install-dir=bin --filename=composer
 	chmod +x bin/composer || /bin/true
